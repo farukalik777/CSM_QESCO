@@ -527,6 +527,11 @@ SAMPLES = [
     ("Ch-2: Connection Categories",               "What are the different connection categories and their voltage requirements?"),
     ("Ch-2: Sanctioning Authority",              "What is the sanctioning authority and their power for new connections?"),
     ("Ch-2: Load Factor Requirements",            "What are the load factor requirements for new connections?"),
+    ("Ch-2: Cat-1 230/400V ≤15kW",              "What are the requirements for Category 1 new connection at 230/400V up to 15kW?"),
+    ("Ch-2: Cat-2 230/400V >15-70kW",           "What are the requirements for Category 2 new connection at 230/400V above 15kW but not exceeding 70kW?"),
+    ("Ch-2: Cat-3 230/400V >70-500kW",          "What are the requirements for Category 3 new connection at 230/400V above 70kW but not exceeding 500kW?"),
+    ("Ch-2: Cat-4 1kV-33kV >500kW-5MW",         "What are the requirements for Category 4 new connection at 1kV to 33kV above 500kW but not exceeding 5000kW?"),
+    ("Ch-2: Cat-5 66kV+ All Loads",              "What are the requirements for Category 5 new connection at 66kV and above for all loads?"),
     # Chapter 4 — Metering
     ("Ch-4: Metering Requirements",               "What are the metering installation requirements?"),
     # Chapter 5 — Security Deposit
