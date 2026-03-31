@@ -1,0 +1,23 @@
+# Environment
+.env
+
+# Streamlit secrets (local API keys — never commit)
+.streamlit/secrets.toml
+
+# Vector store index (regenerate from PDFs)
+vectorstore_index/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+env/
+
+# VS Code
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
