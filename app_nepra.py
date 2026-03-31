@@ -568,8 +568,7 @@ if st.button("🔒 Logout"):
 
 # ── FOOTER ────────────────────────────────────
 st.markdown("""
-<div class="disc">&#9888; <b>Disclaimer:</b> Informational only — based on NEPRA CSM NOV-2025.
-For official decisions contact <b>QESCO / NEPRA</b> at <b>nepra.org.pk</b></div>
+<div class="disc">&#9888; <b>Disclaimer:</b> This AI-based app provides answers generated from NEPRA CSM NOV-2025 for reference only. While accuracy is aimed for, answers may be incomplete or incorrect. Always verify from official NEPRA CSM documents and consult QESCO/NEPRA for official decisions. Page and rule references are indicative — cross-check with original document.</div>
 <div class="footer">AI for Everyone &mdash; Batch-05 &nbsp;|&nbsp; NEPRA CSM NOV-2025
 &nbsp;|&nbsp; QESCO Balochistan &nbsp;|&nbsp; Groq LLaMA + FAISS</div>
 <div class="footer" style="font-size:0.65rem; margin-top:4px;">
