@@ -3,8 +3,8 @@ NEPRA Consumer Service Manual (CSM) NOV-2025 — QESCO
 RAG Chatbot — Groq LLaMA + FAISS + Sentence Transformers
 AI for Everyone — Batch 05 | Project 01
 
-Programmer: [Your Name]
-AI Engineer: [Your Name]
+Programmer: Faruk Ali Khan
+AI Engineer: Faruk Ali Khan
 """
 
 import os, pickle, re
