@@ -29,6 +29,38 @@ groq_client = get_groq_client()
 
 st.set_page_config(page_title="NEPRA CSM Assistant — QESCO", page_icon="⚡", layout="centered")
 
+# ── PASSWORD PROTECTION ─────────────────────────
+if "authenticated" not in st.session_state:
+    st.session_state.authenticated = False
+
+if not st.session_state.authenticated:
+    st.markdown("""
+    <style>
+    .login-container{max-width:400px;margin:80px auto;padding:30px;
+        background:linear-gradient(135deg,#001433,#002266);border:2px solid #0055dd;
+        border-radius:14px;box-shadow:0 8px 32px rgba(0,80,220,0.4);text-align:center;}
+    .login-title{color:#fff;font-size:1.4rem;font-weight:800;margin-bottom:20px;}
+    .login-subtitle{color:#55aaff;font-size:0.8rem;margin-bottom:25px;}
+    </style>
+    <div class="login-container">
+        <div class="login-title">⚡ NEPRA CSM Assistant</div>
+        <div class="login-subtitle">QESCO Balochistan — Restricted Access</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    with st.form("login_form", clear_on_submit=True):
+        password = st.text_input("Enter Password", type="password")
+        submitted = st.form_submit_button("Access")
+        if submitted and password:
+            if password == st.secrets.get("APP_PASSWORD", "qesco2025"):
+                st.session_state.authenticated = True
+                st.rerun()
+            else:
+                st.error("Incorrect password")
+    st.stop()
+
+# ── MAIN APP STARTS HERE ──────────────────────
+
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
@@ -529,6 +561,11 @@ if prompt := st.chat_input("⚡ Ask about NEPRA CSM — Connection / Billing / D
     st.session_state.msgs.append({"role":"assistant","card":card})
     st.rerun()
 
+# ── LOGOUT ────────────────────────────────────
+if st.button("🔒 Logout"):
+    st.session_state.authenticated = False
+    st.rerun()
+
 # ── FOOTER ────────────────────────────────────
 st.markdown("""
 <div class="disc">&#9888; <b>Disclaimer:</b> Informational only — based on NEPRA CSM NOV-2025.
@@ -536,6 +573,6 @@ For official decisions contact <b>QESCO / NEPRA</b> at <b>nepra.org.pk</b></div>
 <div class="footer">AI for Everyone &mdash; Batch-05 &nbsp;|&nbsp; NEPRA CSM NOV-2025
 &nbsp;|&nbsp; QESCO Balochistan &nbsp;|&nbsp; Groq LLaMA + FAISS</div>
 <div class="footer" style="font-size:0.65rem; margin-top:4px;">
-Programmer: <b>[Your Name]</b> &nbsp;|&nbsp; AI Engineer: <b>[Your Name]</b>
+Programmer: <b>Faruk Ali Khan</b> &nbsp;|&nbsp; AI Engineer: <b>Faruk Ali Khan</b>
 </div>
 """, unsafe_allow_html=True)
