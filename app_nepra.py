@@ -2,6 +2,9 @@
 NEPRA Consumer Service Manual (CSM) NOV-2025 — QESCO
 RAG Chatbot — Groq LLaMA + FAISS + Sentence Transformers
 AI for Everyone — Batch 05 | Project 01
+
+Programmer: [Your Name]
+AI Engineer: [Your Name]
 """
 
 import os, pickle, re
@@ -532,4 +535,7 @@ st.markdown("""
 For official decisions contact <b>QESCO / NEPRA</b> at <b>nepra.org.pk</b></div>
 <div class="footer">AI for Everyone &mdash; Batch-05 &nbsp;|&nbsp; NEPRA CSM NOV-2025
 &nbsp;|&nbsp; QESCO Balochistan &nbsp;|&nbsp; Groq LLaMA + FAISS</div>
+<div class="footer" style="font-size:0.65rem; margin-top:4px;">
+Programmer: <b>[Your Name]</b> &nbsp;|&nbsp; AI Engineer: <b>[Your Name]</b>
+</div>
 """, unsafe_allow_html=True)
