@@ -495,7 +495,7 @@ SAMPLES = [
     # Chapter 4–16
     ("Ch-4: Metering Installation Procedure",       "What is the procedure for metering installation according to NEPRA CSM?"),
     ("Ch-5: Security Deposit Rates",                "What are the security deposit rates in NEPRA CSM NOV-2025?"),
-    ("Ch-5: Load Factor for Detection",            "What is the percentage of load factor for detection for different types of connections?"),
+    ("Ch-5: Load Factor for Detection",            "What is the percentage of load factor for detection for different types of connections with Sr. No., Category of Connection, and Load Factor to be charged?"),
     ("Ch-6: Meter Reading & Billing",              "Explain the meter reading and billing procedure under NEPRA CSM."),
     ("Ch-8: Disconnection & Reconnection",          "When can QESCO disconnect a service? What is the reconnection procedure?"),
     ("Ch-9: Theft / Detection Penalties",          "What are the penalties for dishonest abstraction or theft of electricity?"),
@@ -538,19 +538,28 @@ if not st.session_state.msgs:
         st.session_state.msgs.append({"role":"assistant","card":card})
         st.rerun()
 
+# ── CLEAR CHAT (at top) ───────────────────────
+if st.session_state.msgs:
+    if st.button("🗑️ Clear Chat"):
+        st.session_state.msgs = []
+        st.rerun()
+
 # ── CHAT HISTORY ──────────────────────────────
 st.markdown('<div class="chat-wrap">', unsafe_allow_html=True)
-for msg in reversed(st.session_state.msgs):
+for msg in st.session_state.msgs:
     if msg["role"] == "user":
         st.markdown(f'<div class="umsg">&#x1F9D1; {msg["content"]}</div>', unsafe_allow_html=True)
     else:
         st.markdown(msg.get("card",""), unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
 
-if st.session_state.msgs:
-    if st.button("&#128465; Clear Chat"):
-        st.session_state.msgs = []
-        st.rerun()
+# Auto-scroll to top after new message (via JS)
+st.markdown("""
+<script>
+function scrollToTop(){{window.scrollTo(0,0);}}
+setTimeout(scrollToTop, 100);
+</script>
+""", unsafe_allow_html=True)
 
 # ── TEXT INPUT ────────────────────────────────
 if prompt := st.chat_input("⚡ Ask about NEPRA CSM — Connection / Billing / Detection / Complaints / Net Metering..."):
