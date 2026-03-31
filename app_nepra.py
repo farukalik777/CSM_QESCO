@@ -487,7 +487,7 @@ else:
 # (label, full_question)
 SAMPLES = [
     # New Connection — Chapter 2 Categories
-    ("Ch-2: Cat-1: 230/400V ≤15kW",        "What are the requirements for Category 1 new connection including voltage, load, tariff category, other types of connections, and sanctioning officer?"),
+    ("Ch-2: Cat-1: 230/400V ≤15kW",        "What are the requirements for Category 1 new connection including voltage, load, tariff category, sanctioning officer, and other types of connections?"),
     ("Ch-2: Cat-2: 230/400V >15-70kW",     "What are the requirements for Category 2 new connection including voltage, load, tariff category, other types of connections, and sanctioning officer?"),
     ("Ch-2: Cat-3: 230/400V >70-500kW",   "What are the requirements for Category 3 new connection including voltage, load, tariff category, and sanctioning officer?"),
     ("Ch-2: Cat-4: 1kV-33kV >500kW-5MW",  "What are the requirements for Category 4 new connection including voltage, load, tariff category, and sanctioning officer?"),
@@ -495,7 +495,8 @@ SAMPLES = [
     # Chapter 4–16
     ("Ch-4: Metering Installation Procedure",       "What is the procedure for metering installation according to NEPRA CSM?"),
     ("Ch-5: Security Deposit Rates",                "What are the security deposit rates in NEPRA CSM NOV-2025?"),
-    ("Ch-6: Meter Reading & Billing",               "Explain the meter reading and billing procedure under NEPRA CSM."),
+    ("Ch-5: Load Factor for Detection",            "What is the percentage of load factor for detection for different types of connections?"),
+    ("Ch-6: Meter Reading & Billing",              "Explain the meter reading and billing procedure under NEPRA CSM."),
     ("Ch-8: Disconnection & Reconnection",          "When can QESCO disconnect a service? What is the reconnection procedure?"),
     ("Ch-9: Theft / Detection Penalties",          "What are the penalties for dishonest abstraction or theft of electricity?"),
     ("Ch-10: Consumer Complaint & Redressal",       "How should a consumer file a complaint? What is the redressal timeframe?"),
