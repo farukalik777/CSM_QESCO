@@ -572,6 +572,6 @@ st.markdown("""
 <div class="footer">AI for Everyone &mdash; Batch-05 &nbsp;|&nbsp; NEPRA CSM NOV-2025
 &nbsp;|&nbsp; QESCO Balochistan &nbsp;|&nbsp; Groq LLaMA + FAISS</div>
 <div class="footer" style="font-size:0.65rem; margin-top:4px;">
-Programmer: <b>Faruk Ali Khan</b> &nbsp;|&nbsp; AI Engineer: <b>Faruk Ali Khan</b>
+Developer: <b>Faruk Ali Khan</b>
 </div>
 """, unsafe_allow_html=True)
