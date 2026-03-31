@@ -522,22 +522,26 @@ else:
 # ── SAMPLE QUESTIONS ──────────────────────────
 # (label, full_question)
 SAMPLES = [
-    # New Connection — Chapter 2 Categories
-    ("Ch-2: New Conn Cat-1 230/400V ≤15kW",        "What are the requirements for Category 1 new connection at 230/400V up to 15kW?"),
-    ("Ch-2: New Conn Cat-2 230/400V >15-70kW",     "What are the requirements for Category 2 new connection at 230/400V above 15kW but not exceeding 70kW?"),
-    ("Ch-2: New Conn Cat-3 230/400V >70-500kW",    "What are the requirements for Category 3 new connection at 230/400V above 70kW but not exceeding 500kW?"),
-    ("Ch-2: New Conn Cat-4 1kV-33kV >500kW-5MW",   "What are the requirements for Category 4 new connection at 1kV to 33kV above 500kW but not exceeding 5000kW?"),
-    ("Ch-2: New Conn Cat-5 66kV+ All Loads",        "What are the requirements for Category 5 new connection at 66kV and above for all loads?"),
-    # Chapter 4–16
-    ("Ch-4: Metering Installation Procedure",       "What is the procedure for metering installation according to NEPRA CSM?"),
-    ("Ch-5: Security Deposit Rates",                "What are the security deposit rates in NEPRA CSM NOV-2025?"),
-    ("Ch-6: Meter Reading & Billing",               "Explain the meter reading and billing procedure under NEPRA CSM."),
-    ("Ch-8: Disconnection & Reconnection",          "When can QESCO disconnect a service? What is the reconnection procedure?"),
-    ("Ch-9: Theft / Detection Penalties",          "What are the penalties for dishonest abstraction or theft of electricity?"),
-    ("Ch-10: Consumer Complaint & Redressal",       "How should a consumer file a complaint? What is the redressal timeframe?"),
-    ("Ch-13: Net Metering Facility",               "What is the net metering facility and how does it work?"),
-    ("Ch-14: Consumer Rights & DISCO Obligations",  "What are the consumer rights and DISCO obligations under Chapter 14?"),
-    ("Ch-16: EV Charging Stations",                 "What are the requirements for Public Electric Vehicle Charging Stations?"),
+    # Chapter 2 — New Connections (Most Popular)
+    ("Ch-2: New Connection Process",              "What is the complete new connection process according to NEPRA CSM?"),
+    ("Ch-2: Connection Categories",               "What are the different connection categories and their voltage requirements?"),
+    ("Ch-2: Load Factor & Security Deposit",     "What are the load factor requirements and security deposit rates for new connections?"),
+    # Chapter 4 — Metering
+    ("Ch-4: Metering Requirements",               "What are the metering installation requirements?"),
+    # Chapter 5 — Security Deposit
+    ("Ch-5: Security Deposit Rates",              "What are the security deposit rates and their calculation?"),
+    # Chapter 6 — Billing
+    ("Ch-6: Meter Reading & Billing",             "Explain the meter reading and billing procedure."),
+    # Chapter 7 — Defaulters
+    ("Ch-7: Defaulters Payment Recovery",         "What is the procedure for recovery of payments from defaulters?"),
+    # Chapter 8 — Disconnection & Reconnection
+    ("Ch-8: Disconnection Conditions",            "Under what conditions can QESCO disconnect a service?"),
+    ("Ch-8: Reconnection Procedure",              "What is the reconnection procedure after disconnection?"),
+    # Chapter 9 — Theft & Detection
+    ("Ch-9: Theft of Electricity",                "What constitutes theft of electricity and what are the penalties?"),
+    ("Ch-9: Detection & Charging",                 "What is the procedure for detection and charging in theft cases?"),
+    # Chapter 10 — Complaints
+    ("Ch-10: Consumer Complaints",                 "How can a consumer file a complaint and what is the redressal timeline?"),
 ]
 
 # Only show picker when chat is empty
