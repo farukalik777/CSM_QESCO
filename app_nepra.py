@@ -6,13 +6,50 @@ AI for Everyone — Batch 05
 Huge gratitude to my instructors Muhammad Abbas and Muhammad Anas for their incredible teaching and guidance! Thank you 365 Boot Camp and Analytix Camp for this amazing learning experience!
 """
 
-import os, pickle, re
+import os, pickle, re, time
 from pathlib import Path
 import streamlit as st
 from groq import Groq
 from pypdf import PdfReader
 from sentence_transformers import SentenceTransformer
 import faiss, numpy as np
+from groq import APIConnectionError, RateLimitError
+
+# ── RETRY WRAPPER ─────────────────────────────
+def ask_groq_with_retry(question, hits, max_retries=3, delay=2):
+    """Call Groq API with retry logic for connection errors."""
+    ctx = "\n---\n".join(
+        "[Printed Page {page} | Sections: {rules}]\n{chunk}".format(
+            page=h["meta"]["page"],
+            rules=", ".join(h["meta"].get("rules",[])) or "General",
+            chunk=h["chunk"]
+        ) for h in hits
+    )
+    msg = [{"role":"user","content":
+        "You are a NEPRA Consumer Service Manual (CSM NOV-2025) expert for QESCO.\n"
+        "Answer using ONLY the provided context.\n\n"
+        "Format your answer EXACTLY like this:\n"
+        "SUMMARY: [One clear sentence answer]\n\n"
+        "DETAILS:\n"
+        "• [Point 1]\n"
+        "• [Point 2]\n"
+        "• [Point 3]\n\n"
+        "REFERENCE: Section [X.X], Page [N] of NEPRA CSM NOV-2025\n\n"
+        "If information not found: write 'Not found in NEPRA CSM NOV-2025'\n\n"
+        f"Context:\n{ctx}\n\nQuestion: {question}\nAnswer:"}]
+    for attempt in range(max_retries):
+        try:
+            resp = groq_client.chat.completions.create(
+                model="llama-3.1-8b-instant",
+                messages=msg,
+                temperature=0, max_tokens=800,
+            )
+            return resp.choices[0].message.content
+        except (APIConnectionError, RateLimitError) as e:
+            if attempt < max_retries - 1:
+                time.sleep(delay * (attempt + 1))
+                continue
+            raise e
 
 # ── CONFIG ────────────────────────────────────
 PDF_FOLDER       = "pdfs"
@@ -531,7 +568,7 @@ if not st.session_state.msgs:
         st.session_state.msgs.append({"role":"user","content":q})
         with st.spinner("⚡ Searching NEPRA CSM..."):
             hits   = retrieve(q, st.session_state.idx, st.session_state.chunks, st.session_state.metas)
-            answer = ask_groq(q, hits)
+            answer = ask_groq_with_retry(q, hits)
             card   = render_answer(answer, hits, rule_lookup)
         st.session_state.msgs.append({"role":"assistant","card":card})
         st.rerun()
@@ -555,7 +592,7 @@ if prompt := st.chat_input("⚡ Ask about NEPRA CSM — Connection / Billing / D
     st.session_state.msgs.append({"role":"user","content":prompt})
     with st.spinner("⚡ Searching NEPRA CSM..."):
         hits   = retrieve(prompt, st.session_state.idx, st.session_state.chunks, st.session_state.metas)
-        answer = ask_groq(prompt, hits)
+        answer = ask_groq_with_retry(prompt, hits)
         card   = render_answer(answer, hits, rule_lookup)
     st.session_state.msgs.append({"role":"assistant","card":card})
     st.rerun()
