@@ -543,6 +543,10 @@ SAMPLES = [
     ("Ch-9: Detection & Charging",               "What is the procedure for detection and charging in theft cases?"),
     # Chapter 10 — Complaints
     ("Ch-10: Consumer Complaints",                "How can a consumer file a complaint and what is the redressal timeline?"),
+    # Chapter 13 — Net Metering
+    ("Ch-13: Net Metering Facility",             "What is the net metering facility and how does it work?"),
+    # Chapter 16 — EV Charging
+    ("Ch-16: EV Charging Stations",               "What are the requirements for Public Electric Vehicle Charging Stations?"),
 ]
 
 # Only show picker when chat is empty
