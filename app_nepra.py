@@ -522,10 +522,11 @@ else:
 # ── SAMPLE QUESTIONS ──────────────────────────
 # (label, full_question)
 SAMPLES = [
-    # Chapter 2 — New Connections (Most Popular)
+    # Chapter 2 — New Connections
     ("Ch-2: New Connection Process",              "What is the complete new connection process according to NEPRA CSM?"),
     ("Ch-2: Connection Categories",               "What are the different connection categories and their voltage requirements?"),
-    ("Ch-2: Load Factor & Security Deposit",     "What are the load factor requirements and security deposit rates for new connections?"),
+    ("Ch-2: Sanctioning Authority",              "What is the sanctioning authority and their power for new connections?"),
+    ("Ch-2: Load Factor Requirements",            "What are the load factor requirements for new connections?"),
     # Chapter 4 — Metering
     ("Ch-4: Metering Requirements",               "What are the metering installation requirements?"),
     # Chapter 5 — Security Deposit
@@ -536,12 +537,12 @@ SAMPLES = [
     ("Ch-7: Defaulters Payment Recovery",         "What is the procedure for recovery of payments from defaulters?"),
     # Chapter 8 — Disconnection & Reconnection
     ("Ch-8: Disconnection Conditions",            "Under what conditions can QESCO disconnect a service?"),
-    ("Ch-8: Reconnection Procedure",              "What is the reconnection procedure after disconnection?"),
+    ("Ch-8: Reconnection Procedure",             "What is the reconnection procedure after disconnection?"),
     # Chapter 9 — Theft & Detection
-    ("Ch-9: Theft of Electricity",                "What constitutes theft of electricity and what are the penalties?"),
-    ("Ch-9: Detection & Charging",                 "What is the procedure for detection and charging in theft cases?"),
+    ("Ch-9: Theft of Electricity",               "What constitutes theft of electricity and what are the penalties?"),
+    ("Ch-9: Detection & Charging",               "What is the procedure for detection and charging in theft cases?"),
     # Chapter 10 — Complaints
-    ("Ch-10: Consumer Complaints",                 "How can a consumer file a complaint and what is the redressal timeline?"),
+    ("Ch-10: Consumer Complaints",                "How can a consumer file a complaint and what is the redressal timeline?"),
 ]
 
 # Only show picker when chat is empty
