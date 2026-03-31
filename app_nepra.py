@@ -487,7 +487,7 @@ else:
 # (label, full_question)
 SAMPLES = [
     # New Connection — Chapter 2 Categories
-    ("Ch-2: Cat-1: 230/400V ≤15kW",        "What are the requirements for Category 1 new connection including voltage, load, tariff category, and sanctioning officer?"),
+    ("Ch-2: Cat-1: 230/400V ≤15kW",        "What are the requirements for Category 1 new connection including voltage, load, tariff category, other types of connections, and sanctioning officer?"),
     ("Ch-2: Cat-2: 230/400V >15-70kW",     "What are the requirements for Category 2 new connection including voltage, load, tariff category, other types of connections, and sanctioning officer?"),
     ("Ch-2: Cat-3: 230/400V >70-500kW",   "What are the requirements for Category 3 new connection including voltage, load, tariff category, and sanctioning officer?"),
     ("Ch-2: Cat-4: 1kV-33kV >500kW-5MW",  "What are the requirements for Category 4 new connection including voltage, load, tariff category, and sanctioning officer?"),
