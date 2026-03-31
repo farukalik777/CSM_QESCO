@@ -63,7 +63,7 @@ def get_groq_client():
 
 groq_client = get_groq_client()
 
-st.set_page_config(page_title="NEPRA CSM Assistant — QESCO", page_icon="⚡", layout="wide")
+st.set_page_config(page_title="NEPRA CSM Assistant — QESCO", page_icon="⚡", layout="centered")
 
 # ── PASSWORD PROTECTION ─────────────────────────
 if "authenticated" not in st.session_state:
@@ -72,168 +72,142 @@ if "authenticated" not in st.session_state:
 if not st.session_state.authenticated:
     st.markdown("""
     <style>
-    .login-wrapper{height:100vh;display:flex;align-items:center;justify-content:center;
-        background:linear-gradient(135deg,#0a1628 0%,#0d1f3c 50%,#0a1628 100%);}
-    .login-card{max-width:420px;width:90%;padding:40px 35px;
-        background:linear-gradient(145deg,rgba(15,30,60,0.95),rgba(10,20,40,0.98));
-        border:1px solid rgba(0,120,255,0.3);border-radius:16px;
-        box-shadow:0 25px 60px rgba(0,0,0,0.5),0 0 40px rgba(0,80,200,0.15);}
-    .login-logo{display:flex;justify-content:center;gap:12px;margin-bottom:30px;}
-    .login-logo-nepra,.login-logo-qesco{padding:10px 14px;border-radius:10px;text-align:center;}
-    .login-logo-nepra{background:linear-gradient(135deg,#002d99,#0050cc);border:1px solid #3388ff;}
-    .login-logo-qesco{background:linear-gradient(135deg,#002800,#005500);border:1px solid #00bb44;}
-    .login-logo div:first-child{font-size:0.6rem;font-weight:800;letter-spacing:2px;color:#aaccff;}
-    .login-logo div:nth-child(2){font-size:1.5rem;font-weight:900;color:#fff;letter-spacing:2px;}
-    .login-logo div:last-child{font-size:0.45rem;color:#88ffaa;}
-    .login-title{text-align:center;color:#fff;font-size:1.3rem;font-weight:700;margin-bottom:8px;}
-    .login-subtitle{text-align:center;color:#5599cc;font-size:0.8rem;margin-bottom:30px;line-height:1.5;}
-    .login-divider{height:1px;background:linear-gradient(90deg,transparent,#0055aa,transparent);margin:20px 0;}
-    .login-footer{text-align:center;color:#335577;font-size:0.65rem;margin-top:20px;}
+    .login-container{max-width:400px;margin:80px auto;padding:30px;
+        background:linear-gradient(135deg,#001433,#002266);border:2px solid #0055dd;
+        border-radius:14px;box-shadow:0 8px 32px rgba(0,80,220,0.4);text-align:center;}
+    .login-title{color:#fff;font-size:1.4rem;font-weight:800;margin-bottom:20px;}
+    .login-subtitle{color:#55aaff;font-size:0.8rem;margin-bottom:25px;}
     </style>
-    <div class="login-wrapper">
-        <div class="login-card">
-            <div class="login-logo">
-                <div class="login-logo-nepra">
-                    <div style="color:#aaccff;font-size:0.5rem;font-weight:800;letter-spacing:1px;">NATIONAL</div>
-                    <div style="color:#fff;font-size:1.3rem;font-weight:900;letter-spacing:2px;text-shadow:0 0 10px #44aaff;">NEPRA</div>
-                    <div style="color:#66aaff;font-size:0.4rem;">Electric Power<br>Regulatory Authority</div>
-                </div>
-                <div class="login-logo-qesco">
-                    <div style="color:#88ffaa;font-size:0.5rem;font-weight:800;letter-spacing:1px;">QUETTA ELECTRIC</div>
-                    <div style="color:#fff;font-size:1.3rem;font-weight:900;letter-spacing:2px;text-shadow:0 0 10px #22ff66;">QESCO</div>
-                    <div style="color:#33ff77;font-size:0.4rem;">Supply Company<br>Balochistan</div>
-                </div>
-            </div>
-            <div class="login-title">⚡ CSM Assistant</div>
-            <div class="login-subtitle">NEPRA Consumer Service Manual<br>Access Restricted</div>
-            <div class="login-divider"></div>
-        </div>
+    <div class="login-container">
+        <div class="login-title">⚡ NEPRA CSM Assistant</div>
+        <div class="login-subtitle">QESCO Balochistan — Restricted Access</div>
     </div>
     """, unsafe_allow_html=True)
 
     with st.form("login_form", clear_on_submit=True):
-        password = st.text_input("🔑 Enter Password", type="password", label_visibility="collapsed",
-            placeholder="Enter access password")
-        submitted = st.form_submit_button("🚀 Access Assistant", use_container_width=True)
+        password = st.text_input("Enter Password", type="password")
+        submitted = st.form_submit_button("Access")
         if submitted and password:
             if password == st.secrets.get("APP_PASSWORD", "qesco2025"):
                 st.session_state.authenticated = True
                 st.rerun()
             else:
-                st.error("Incorrect password. Please try again.")
-        elif submitted:
-            st.error("Please enter a password")
+                st.error("Incorrect password")
     st.stop()
 
 # ── MAIN APP STARTS HERE ──────────────────────
 
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
 *{font-family:'Inter',sans-serif;box-sizing:border-box;}
-.stApp{background:linear-gradient(135deg,#070d1a 0%,#0a1628 50%,#070d1a 100%);}
+.block-container{padding-top:0.4rem!important;padding-bottom:0.3rem!important;max-width:900px!important;}
+.stApp{background:#04090f;}
 
 /* ── HEADER ── */
 .hdr{display:flex;align-items:center;justify-content:space-between;
-    background:linear-gradient(135deg,rgba(0,20,50,0.95),rgba(0,30,70,0.95),rgba(0,40,90,0.95));
-    border:1px solid rgba(0,100,200,0.4);border-radius:12px;padding:12px 20px;margin-bottom:10px;
-    box-shadow:0 4px 20px rgba(0,60,150,0.3);}
-.logo-box{background:linear-gradient(135deg,#002d99,#0050cc);border:1px solid #3388ff;
-    border-radius:10px;padding:8px 14px;text-align:center;min-width:90px;}
-.logo-box .la{color:#aaccff;font-size:0.45rem;font-weight:700;letter-spacing:2px;}
-.logo-box .lb{color:#fff;font-size:1.1rem;font-weight:900;letter-spacing:2px;text-shadow:0 0 8px #44aaff;}
-.logo-box .lc{color:#66aaff;font-size:0.38rem;line-height:1.3;}
-.logo-box.green{background:linear-gradient(135deg,#002800,#005500);border-color:#00bb44;}
-.logo-box.green .la{color:#88ffaa;}
-.logo-box.green .lc{color:#33ff77;}
-.hdr-mid{flex:1;text-align:center;padding:0 15px;}
-.hdr-mid h1{color:#fff;font-size:1.1rem;font-weight:800;margin:0 0 4px;}
-.hdr-mid p{color:#55aaff;font-size:0.62rem;margin:0;}
-.badges{display:flex;gap:6px;justify-content:center;margin-top:6px;flex-wrap:wrap;}
-.badge{background:rgba(0,70,180,0.4);border:1px solid rgba(0,100,200,0.5);border-radius:20px;
-    padding:3px 10px;font-size:0.6rem;color:#77bbff;}
+    background:linear-gradient(135deg,#001433,#002266,#003d99,#001433);
+    border:2px solid #0055dd;border-radius:14px;padding:10px 16px;margin-bottom:8px;
+    box-shadow:0 4px 24px rgba(0,80,220,0.45);}
+.logo-nepra{background:linear-gradient(135deg,#002d99,#0050cc);border:2px solid #3388ff;
+    border-radius:10px;padding:6px 10px;text-align:center;min-width:88px;}
+.logo-nepra .la{color:#aaccff;font-size:0.42rem;font-weight:800;letter-spacing:2px;}
+.logo-nepra .lb{color:#fff;font-size:1.2rem;font-weight:900;line-height:1;letter-spacing:2px;text-shadow:0 0 12px #44aaff;}
+.logo-nepra .lc{color:#66aaff;font-size:0.36rem;line-height:1.4;}
+.logo-qesco{background:linear-gradient(135deg,#002800,#005500);border:2px solid #00bb44;
+    border-radius:10px;padding:6px 10px;text-align:center;min-width:88px;}
+.logo-qesco .la{color:#88ffaa;font-size:0.42rem;font-weight:800;letter-spacing:2px;}
+.logo-qesco .lb{color:#fff;font-size:1.2rem;font-weight:900;line-height:1;letter-spacing:2px;text-shadow:0 0 12px #22ff66;}
+.logo-qesco .lc{color:#33ff77;font-size:0.36rem;line-height:1.4;}
+.hdr-mid{flex:1;text-align:center;padding:0 10px;}
+.hdr-mid h2{color:#fff;font-size:0.9rem;font-weight:800;margin:0 0 2px;line-height:1.25;}
+.hdr-mid p{color:#55aaff;font-size:0.58rem;margin:0;}
+.hdr-mid .badges{display:flex;gap:4px;justify-content:center;margin-top:4px;flex-wrap:wrap;}
+.bd-b{background:rgba(0,70,180,0.45);border:1px solid #0055dd;border-radius:20px;padding:1px 7px;font-size:0.58rem;color:#66aaff;display:inline-block;}
+.bd-g{background:rgba(0,130,40,0.35);border:1px solid #00aa33;border-radius:20px;padding:1px 7px;font-size:0.58rem;color:#33ee66;display:inline-block;}
 
-/* ── STATUS BAR ── */
-.sbar{background:linear-gradient(90deg,rgba(0,25,50,0.9),rgba(0,35,70,0.9));
-    border:1px solid rgba(0,80,180,0.4);border-radius:8px;padding:8px 16px;margin-bottom:10px;
-    font-size:0.72rem;color:#55aaff;}
+/* ── STATUS ── */
+.sbar{background:linear-gradient(90deg,#001628,#002244);border:1px solid #004acc;
+    border-radius:7px;padding:5px 12px;margin-bottom:7px;font-size:0.68rem;color:#55aaff;}
 .sbar b{color:#00ff88;}
 
-/* ── CHAT INPUT ── */
-.stChatInput>div{background:rgba(0,20,45,0.95)!important;border:2px solid rgba(0,100,200,0.5)!important;
-    border-radius:12px!important;box-shadow:0 0 20px rgba(0,80,180,0.2)!important;}
-.stChatInput textarea{color:#fff!important;font-size:0.9rem!important;background:transparent!important;}
+/* ── CHAT AREA ── */
+.chat-wrap{max-height:65vh;overflow-y:auto;padding-right:2px;margin-bottom:5px;
+    display:flex;flex-direction:column-reverse;}
+
+/* User bubble */
+.umsg{background:linear-gradient(135deg,#002d99,#003dbb);border:1px solid #2277ff;
+    border-radius:14px 14px 3px 14px;padding:8px 14px;margin:4px 0 4px 25%;
+    color:#fff;font-size:0.84rem;line-height:1.55;box-shadow:0 2px 10px rgba(0,60,180,0.3);}
+
+/* ── ANSWER CARD ── */
+.acard{background:#05110a;border:1px solid #008833;border-radius:14px 14px 14px 3px;
+    padding:0;margin:4px 0 4px 0;overflow:hidden;box-shadow:0 2px 16px rgba(0,130,50,0.25);}
+
+/* Answer top — AI response */
+.atop{padding:10px 14px;background:linear-gradient(135deg,#031a0a,#042210);}
+.atop .alabel{color:#33dd66;font-size:0.65rem;font-weight:700;letter-spacing:1px;margin-bottom:4px;}
+.atop .atext{color:#ccffdd;font-size:0.82rem;line-height:1.65;}
+
+/* Rule section */
+.arules{border-top:1px solid #004422;padding:8px 14px;background:#030f06;}
+.arules .rlabel{color:#00cc55;font-size:0.63rem;font-weight:700;letter-spacing:1px;
+    margin-bottom:6px;display:flex;align-items:center;gap:6px;}
+.ritem{background:rgba(0,50,20,0.6);border:1px solid #006633;border-radius:8px;
+    padding:6px 10px;margin-bottom:5px;}
+.ritem:last-child{margin-bottom:0;}
+.rnum{display:inline-block;background:#004422;border:1px solid #00aa44;
+    border-radius:4px;padding:1px 7px;color:#00ff88;font-size:0.65rem;
+    font-weight:800;margin-right:6px;}
+.rhead{color:#aaffcc;font-size:0.72rem;font-weight:700;}
+.rpage{color:#44aa66;font-size:0.62rem;margin-left:6px;}
+.rtext{color:#88ccaa;font-size:0.68rem;line-height:1.55;margin-top:4px;
+    padding-top:4px;border-top:1px dashed #004422;}
+
+/* Source footer */
+.asrc{border-top:1px solid #003322;padding:5px 14px;background:#030f06;
+    font-size:0.62rem;display:flex;flex-wrap:wrap;gap:4px;align-items:center;}
+.stg{display:inline-block;background:rgba(0,50,100,0.4);border:1px solid #005599;
+    border-radius:5px;padding:1px 7px;color:#55aadd;font-size:0.6rem;}
+.stg-r{display:inline-block;background:rgba(0,80,30,0.4);border:1px solid #007733;
+    border-radius:5px;padding:1px 7px;color:#33cc66;font-size:0.6rem;font-weight:600;}
+
+/* Buttons */
+.stButton>button{background:linear-gradient(135deg,#001628,#002244)!important;
+    border:1px solid #004acc!important;color:#55aaff!important;
+    border-radius:7px!important;font-size:0.7rem!important;
+    padding:4px 8px!important;width:100%!important;transition:all 0.2s!important;}
+.stButton>button:hover{background:linear-gradient(135deg,#002244,#003366)!important;
+    border-color:#2277ff!important;color:#fff!important;
+    box-shadow:0 0 8px rgba(0,80,220,0.4)!important;}
+
+/* Chat input */
+.stChatInput>div{background:#001628!important;border:2px solid #0055dd!important;
+    border-radius:10px!important;box-shadow:0 0 14px rgba(0,80,200,0.3)!important;}
+.stChatInput textarea{color:#fff!important;font-size:0.83rem!important;background:#001628!important;}
 .stChatInput textarea::placeholder{color:#4477aa!important;}
 
-/* ── CHAT MESSAGES ── */
-.chat-wrap{max-height:55vh;overflow-y:auto;padding:5px 0;margin-bottom:10px;}
-.user-msg{background:linear-gradient(135deg,#003399,#0044bb);border:1px solid #2277ff;
-    border-radius:16px 16px 4px 16px;padding:12px 16px;margin:6px 0 6px 20%;
-    color:#fff;font-size:0.9rem;line-height:1.6;box-shadow:0 4px 12px rgba(0,60,180,0.25);}
-.ai-msg{background:linear-gradient(135deg,rgba(5,20,12,0.95),rgba(8,30,18,0.95));
-    border:1px solid rgba(0,140,60,0.4);border-radius:16px 16px 16px 4px;
-    padding:0;margin:6px 0;overflow:hidden;box-shadow:0 4px 16px rgba(0,130,50,0.2);}
-.msg-header{padding:10px 16px 6px;background:linear-gradient(135deg,rgba(5,25,15,0.9),rgba(8,35,20,0.9));
-    border-bottom:1px solid rgba(0,100,50,0.3);}
-.msg-header .label{color:#33dd66;font-size:0.65rem;font-weight:700;letter-spacing:1.5px;}
-.msg-body{padding:12px 16px;background:linear-gradient(135deg,rgba(8,35,20,0.9),rgba(12,45,25,0.9));}
-.msg-body .text{color:#ccffdd;font-size:0.85rem;line-height:1.7;}
+/* Sample question bar */
+.sq-bar{display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap;}
+.sq-label{color:#55aaff;font-size:0.68rem;font-weight:700;white-space:nowrap;}
+.stSelectbox>div>div{background:#001628!important;border:1px solid #0055dd!important;
+    border-radius:7px!important;}
+.stSelectbox [data-baseweb=select]{background:#001628!important;}
+.stSelectbox [data-baseweb=selected-option]{color:#ffffff!important;font-size:0.85rem!important;font-weight:600!important;}
+.stSelectbox [data-baseweb=input]{color:#ffffff!important;font-size:0.85rem!important;}
+.sq-go button{background:linear-gradient(135deg,#001628,#002244)!important;
+    border:1px solid #0055dd!important;color:#55aaff!important;
+    border-radius:7px!important;font-size:0.75rem!important;
+    padding:4px 14px!important;}
 
-/* ── RULE ITEMS ── */
-.rules-section{border-top:1px solid rgba(0,80,40,0.3);padding:10px 16px;
-    background:rgba(5,20,12,0.8);}
-.rule-item{background:rgba(0,50,25,0.5);border:1px solid rgba(0,120,60,0.4);border-radius:8px;
-    padding:8px 12px;margin-bottom:6px;}
-.rule-item:last-child{margin-bottom:0;}
-.rule-header{display:flex;align-items:center;gap:8px;margin-bottom:4px;}
-.rule-num{background:rgba(0,80,40,0.8);border:1px solid #00aa44;border-radius:4px;
-    padding:2px 8px;color:#00ff88;font-size:0.62rem;font-weight:700;}
-.rule-title{color:#aaffcc;font-size:0.75rem;font-weight:600;}
-.rule-page{color:#44aa66;font-size:0.6rem;margin-left:auto;}
-.rlabel{color:#00cc55;font-size:0.65rem;font-weight:700;letter-spacing:1px;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
-.rule-text{color:#88ccaa;font-size:0.7rem;line-height:1.5;padding-left:4px;}
-
-/* ── SOURCE TAGS ── */
-.source-section{border-top:1px solid rgba(0,60,40,0.3);padding:8px 16px;
-    background:rgba(5,15,10,0.8);display:flex;flex-wrap:wrap;gap:6px;}
-.source-tag{background:rgba(0,50,80,0.5);border:1px solid rgba(0,100,150,0.4);
-    border-radius:5px;padding:2px 8px;color:#55aadd;font-size:0.62rem;}
-
-/* ── SAMPLE QUESTIONS ── */
-.sample-section{background:linear-gradient(135deg,rgba(0,20,45,0.8),rgba(0,30,60,0.8));
-    border:1px solid rgba(0,80,160,0.3);border-radius:10px;padding:12px 16px;margin-bottom:10px;}
-.sample-header{color:#55aaff;font-size:0.72rem;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
-.stSelectbox>div>div{background:rgba(0,20,45,0.9)!important;border:1px solid rgba(0,100,200,0.5)!important;
-    border-radius:8px!important;}
-.stSelectbox [data-baseweb=select]{background:transparent!important;}
-.stSelectbox [data-baseweb=selected-option]{color:#ffffff!important;font-size:0.85rem!important;font-weight:500!important;}
-.stSelectbox [data-baseweb=input]{color:#ffffff!important;}
-
-/* ── BUTTONS ── */
-.stButton>button{background:linear-gradient(135deg,rgba(0,30,70,0.9),rgba(0,40,90,0.9))!important;
-    border:1px solid rgba(0,100,200,0.5)!important;color:#66aaff!important;
-    border-radius:8px!important;font-size:0.75rem!important;padding:6px 12px!important;
-    transition:all 0.2s!important;}
-.stButton>button:hover{background:linear-gradient(135deg,rgba(0,40,90,0.95),rgba(0,60,120,0.95))!important;
-    border-color:#3388ff!important;color:#fff!important;box-shadow:0 0 12px rgba(0,80,200,0.4)!important;}
-
-/* ── DISCLAIMER & FOOTER ── */
-.disc{background:linear-gradient(135deg,rgba(40,25,0,0.9),rgba(50,30,5,0.9));
-    border:1px solid rgba(180,120,0,0.5);border-radius:8px;padding:10px 16px;margin-top:10px;
-    font-size:0.68rem;color:#ffcc44;line-height:1.6;}
-.disc b{color:#ffdd66;}
-.footer{text-align:center;color:#446688;font-size:0.68rem;padding:8px 0 4px;
-    border-top:1px solid rgba(0,50,80,0.3);margin-top:6px;}
-.footer b{color:#5599bb;}
-
-/* ── HIDE STREAMLIT DEFAULTS ── */
+/* Disclaimer */
+.disc{background:linear-gradient(135deg,#140e00,#201500);border:1px solid #bb7700;
+    border-radius:8px;padding:5px 12px;margin-top:5px;font-size:0.65rem;color:#ffaa33;line-height:1.5;}
+.disc b{color:#ffcc00;}
+.footer{text-align:center;color:#88aacc;font-size:0.65rem;
+    padding:3px 0 1px;border-top:1px solid #003366;margin-top:4px;}
 #MainMenu,footer,header{visibility:hidden;}
 [data-testid="stSidebar"],[data-testid="collapsedControl"]{display:none!important;}
-
-/* ── SCROLLBAR ── */
-.chat-wrap::-webkit-scrollbar{width:6px;}
-.chat-wrap::-webkit-scrollbar-track{background:rgba(0,20,40,0.3);}
-.chat-wrap::-webkit-scrollbar-thumb{background:rgba(0,80,160,0.4);border-radius:3px;}
 </style>
 """, unsafe_allow_html=True)
 
@@ -440,23 +414,21 @@ def build_rule_boxes(hits, rule_lookup):
             body  = info["text"][:320]
             page  = info["page"]
             body_html = (
-                f'<div class="rule-text">{body}{"..." if len(info["text"])>320 else ""}</div>'
+                f'<div class="rtext">{body}{"..." if len(info["text"])>320 else ""}</div>'
                 if body else ""
             )
             items.append(
-                f'<div class="rule-item">'
-                f'<div class="rule-header">'
-                f'<span class="rule-num">{rnum}</span>'
-                f'<span class="rule-title">{head}</span>'
-                f'<span class="rule-page">p.{page}</span>'
-                f'</div>'
+                f'<div class="ritem">'
+                f'<span class="rnum">{rnum}</span>'
+                f'<span class="rhead">{head}</span>'
+                f'<span class="rpage">— p.{page}</span>'
                 f'{body_html}'
                 f'</div>'
             )
     if not items:
         return ""
     return (
-        f'<div class="rules-section">'
+        f'<div class="arules">'
         f'<div class="rlabel">📋 NEPRA CSM Rules &amp; Provisions Referenced</div>'
         + "".join(items) +
         f'</div>'
@@ -468,21 +440,22 @@ def build_src(hits):
         k = (h["meta"]["file"], h["meta"]["page"])
         if k not in seen:
             seen.append(k)
-            tags.append(f'<span class="source-tag">📄 {h["meta"]["file"]} — p.{h["meta"]["page"]}</span>')
+            tags.append(f'<span class="stg">📄 {h["meta"]["file"]} — p.<b>{h["meta"]["page"]}</b></span>')
         for r in h["meta"].get("rules", []):
             if f"r:{r}" not in seen:
                 seen.append(f"r:{r}")
-                tags.append(f'<span class="source-tag" style="background:rgba(0,80,40,0.5);border-color:rgba(0,140,60,0.4);color:#33cc66;">§ {r}</span>')
-    return '<div class="source-section">' + " ".join(tags) + '</div>' if tags else ""
+                tags.append(f'<span class="stg-r">§ {r}</span>')
+    return '<div class="asrc">' + " ".join(tags) + '</div>' if tags else ""
 
 def render_answer(answer_text, hits, rule_lookup):
     answer_html = format_answer(answer_text)
     rule_html   = build_rule_boxes(hits, rule_lookup)
     src_html    = build_src(hits)
     return (
-        f'<div class="ai-msg">'
-        f'<div class="msg-header"><span class="label">&#9889; AI RESPONSE</span></div>'
-        f'<div class="msg-body"><div class="text">{answer_html}</div></div>'
+        f'<div class="acard">'
+        f'<div class="atop">'
+        f'{answer_html}'
+        f'</div>'
         f'{rule_html}'
         f'{src_html}'
         f'</div>'
@@ -512,20 +485,20 @@ rule_lookup = build_rule_lookup()
 # ── HEADER ────────────────────────────────────
 st.markdown("""
 <div class="hdr">
-  <div class="logo-box">
+  <div class="logo-nepra">
     <div class="la">NATIONAL</div>
     <div class="lb">NEPRA</div>
     <div class="lc">Electric Power<br>Regulatory Authority</div>
   </div>
   <div class="hdr-mid">
-    <h1>&#9889; Consumer Service Manual Assistant<br>CSM &mdash; NOV 2025</h1>
+    <h2>&#9889; Consumer Service Manual Assistant<br>CSM &mdash; NOV 2025</h2>
     <p>New Connection &middot; Billing &middot; Detection &middot; Complaints &middot; Net Metering</p>
     <div class="badges">
-      <span class="badge">&#9889; Groq LLaMA RAG</span>
-      <span class="badge">&#9670; QESCO Balochistan</span>
+      <span class="bd-b">&#9889; Groq LLaMA RAG</span>
+      <span class="bd-g">&#9670; QESCO Balochistan</span>
     </div>
   </div>
-  <div class="logo-box green">
+  <div class="logo-qesco">
     <div class="la">QUETTA ELECTRIC</div>
     <div class="lb">QESCO</div>
     <div class="lc">Supply Company<br>Balochistan</div>
@@ -574,11 +547,10 @@ if not st.session_state.msgs:
     disp_labels = [f"▸ {lbl}" for lbl, _ in SAMPLES]
     opt_map     = dict(zip(disp_labels, opts))
 
-    st.markdown('<div class="sample-section">', unsafe_allow_html=True)
-    st.markdown('<div class="sample-header">&#9654; Quick Topics — Select to Explore</div>', unsafe_allow_html=True)
+    st.markdown('<div class="sq-bar">', unsafe_allow_html=True)
     cols = st.columns([1, 5, 1])
     with cols[0]:
-        st.markdown('<span class="sq-label" style="color:#55aaff;font-size:0.72rem;font-weight:700;">Topic:</span>', unsafe_allow_html=True)
+        st.markdown('<span class="sq-label">&#9654; ASK</span>', unsafe_allow_html=True)
     with cols[1]:
         chosen = st.selectbox(
             "Choose a topic...",
@@ -605,7 +577,7 @@ if not st.session_state.msgs:
 st.markdown('<div class="chat-wrap">', unsafe_allow_html=True)
 for msg in reversed(st.session_state.msgs):
     if msg["role"] == "user":
-        st.markdown(f'<div class="user-msg">&#128100; {msg["content"]}</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="umsg">&#x1F9D1; {msg["content"]}</div>', unsafe_allow_html=True)
     else:
         st.markdown(msg.get("card",""), unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
