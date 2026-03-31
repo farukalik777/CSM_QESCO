@@ -1,10 +1,9 @@
 """
 NEPRA Consumer Service Manual (CSM) NOV-2025 — QESCO
 RAG Chatbot — Groq LLaMA + FAISS + Sentence Transformers
-AI for Everyone — Batch 05 | Project 01
+AI for Everyone — Batch 05
 
-Programmer: Faruk Ali Khan
-AI Engineer: Faruk Ali Khan
+Huge gratitude to my instructors Muhammad Abbas and Muhammad Anas for their incredible teaching and guidance! Thank you 365 Boot Camp and Analytix Camp for this amazing learning experience!
 """
 
 import os, pickle, re
@@ -157,8 +156,8 @@ st.markdown("""
 .stSelectbox>div>div{background:#001628!important;border:1px solid #0055dd!important;
     border-radius:7px!important;}
 .stSelectbox [data-baseweb=select]{background:#001628!important;}
-.stSelectbox [data-baseweb=selected-option]{color:#aaddff!important;font-size:0.78rem!important;}
-.stSelectbox [data-baseweb=input]{color:#aaddff!important;font-size:0.78rem!important;}
+.stSelectbox [data-baseweb=selected-option]{color:#ffffff!important;font-size:0.85rem!important;font-weight:600!important;}
+.stSelectbox [data-baseweb=input]{color:#ffffff!important;font-size:0.85rem!important;}
 .sq-go button{background:linear-gradient(135deg,#001628,#002244)!important;
     border:1px solid #0055dd!important;color:#55aaff!important;
     border-radius:7px!important;font-size:0.75rem!important;
@@ -168,8 +167,8 @@ st.markdown("""
 .disc{background:linear-gradient(135deg,#140e00,#201500);border:1px solid #bb7700;
     border-radius:8px;padding:5px 12px;margin-top:5px;font-size:0.65rem;color:#ffaa33;line-height:1.5;}
 .disc b{color:#ffcc00;}
-.footer{text-align:center;color:#223344;font-size:0.58rem;
-    padding:3px 0 1px;border-top:1px solid #001628;margin-top:4px;}
+.footer{text-align:center;color:#88aacc;font-size:0.65rem;
+    padding:3px 0 1px;border-top:1px solid #003366;margin-top:4px;}
 #MainMenu,footer,header{visibility:hidden;}
 [data-testid="stSidebar"],[data-testid="collapsedControl"]{display:none!important;}
 </style>
