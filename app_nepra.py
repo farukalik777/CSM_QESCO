@@ -1,55 +1,19 @@
 """
 NEPRA Consumer Service Manual (CSM) NOV-2025 — QESCO
 RAG Chatbot — Groq LLaMA + FAISS + Sentence Transformers
-AI for Everyone — Batch 05
+AI for Everyone — Batch 05 | Project 01
 
-Huge gratitude to my instructors Muhammad Abbas and Muhammad Anas for their incredible teaching and guidance! Thank you 365 Boot Camp and Analytix Camp for this amazing learning experience!
+Programmer: Faruk Ali Khan
+AI Engineer: Faruk Ali Khan
 """
 
-import os, pickle, re, time
+import os, pickle, re
 from pathlib import Path
 import streamlit as st
 from groq import Groq
 from pypdf import PdfReader
 from sentence_transformers import SentenceTransformer
 import faiss, numpy as np
-from groq import APIConnectionError, RateLimitError
-
-# ── RETRY WRAPPER ─────────────────────────────
-def ask_groq_with_retry(question, hits, max_retries=3, delay=2):
-    """Call Groq API with retry logic for connection errors."""
-    ctx = "\n---\n".join(
-        "[Printed Page {page} | Sections: {rules}]\n{chunk}".format(
-            page=h["meta"]["page"],
-            rules=", ".join(h["meta"].get("rules",[])) or "General",
-            chunk=h["chunk"]
-        ) for h in hits
-    )
-    msg = [{"role":"user","content":
-        "You are a NEPRA Consumer Service Manual (CSM NOV-2025) expert for QESCO.\n"
-        "Answer using ONLY the provided context.\n\n"
-        "Format your answer EXACTLY like this:\n"
-        "SUMMARY: [One clear sentence answer]\n\n"
-        "DETAILS:\n"
-        "• [Point 1]\n"
-        "• [Point 2]\n"
-        "• [Point 3]\n\n"
-        "REFERENCE: Section [X.X], Page [N] of NEPRA CSM NOV-2025\n\n"
-        "If information not found: write 'Not found in NEPRA CSM NOV-2025'\n\n"
-        f"Context:\n{ctx}\n\nQuestion: {question}\nAnswer:"}]
-    for attempt in range(max_retries):
-        try:
-            resp = groq_client.chat.completions.create(
-                model="llama-3.1-8b-instant",
-                messages=msg,
-                temperature=0, max_tokens=800,
-            )
-            return resp.choices[0].message.content
-        except (APIConnectionError, RateLimitError) as e:
-            if attempt < max_retries - 1:
-                time.sleep(delay * (attempt + 1))
-                continue
-            raise e
 
 # ── CONFIG ────────────────────────────────────
 PDF_FOLDER       = "pdfs"
@@ -64,38 +28,6 @@ def get_groq_client():
 groq_client = get_groq_client()
 
 st.set_page_config(page_title="NEPRA CSM Assistant — QESCO", page_icon="⚡", layout="centered")
-
-# ── PASSWORD PROTECTION ─────────────────────────
-if "authenticated" not in st.session_state:
-    st.session_state.authenticated = False
-
-if not st.session_state.authenticated:
-    st.markdown("""
-    <style>
-    .login-container{max-width:400px;margin:80px auto;padding:30px;
-        background:linear-gradient(135deg,#001433,#002266);border:2px solid #0055dd;
-        border-radius:14px;box-shadow:0 8px 32px rgba(0,80,220,0.4);text-align:center;}
-    .login-title{color:#fff;font-size:1.4rem;font-weight:800;margin-bottom:20px;}
-    .login-subtitle{color:#55aaff;font-size:0.8rem;margin-bottom:25px;}
-    </style>
-    <div class="login-container">
-        <div class="login-title">⚡ NEPRA CSM Assistant</div>
-        <div class="login-subtitle">QESCO Balochistan — Restricted Access</div>
-    </div>
-    """, unsafe_allow_html=True)
-
-    with st.form("login_form", clear_on_submit=True):
-        password = st.text_input("Enter Password", type="password")
-        submitted = st.form_submit_button("Access")
-        if submitted and password:
-            if password == st.secrets.get("APP_PASSWORD", "qesco2025"):
-                st.session_state.authenticated = True
-                st.rerun()
-            else:
-                st.error("Incorrect password")
-    st.stop()
-
-# ── MAIN APP STARTS HERE ──────────────────────
 
 st.markdown("""
 <style>
@@ -193,8 +125,8 @@ st.markdown("""
 .stSelectbox>div>div{background:#001628!important;border:1px solid #0055dd!important;
     border-radius:7px!important;}
 .stSelectbox [data-baseweb=select]{background:#001628!important;}
-.stSelectbox [data-baseweb=selected-option]{color:#ffffff!important;font-size:0.85rem!important;font-weight:600!important;}
-.stSelectbox [data-baseweb=input]{color:#ffffff!important;font-size:0.85rem!important;}
+.stSelectbox [data-baseweb=selected-option]{color:#aaddff!important;font-size:0.78rem!important;}
+.stSelectbox [data-baseweb=input]{color:#aaddff!important;font-size:0.78rem!important;}
 .sq-go button{background:linear-gradient(135deg,#001628,#002244)!important;
     border:1px solid #0055dd!important;color:#55aaff!important;
     border-radius:7px!important;font-size:0.75rem!important;
@@ -204,8 +136,8 @@ st.markdown("""
 .disc{background:linear-gradient(135deg,#140e00,#201500);border:1px solid #bb7700;
     border-radius:8px;padding:5px 12px;margin-top:5px;font-size:0.65rem;color:#ffaa33;line-height:1.5;}
 .disc b{color:#ffcc00;}
-.footer{text-align:center;color:#88aacc;font-size:0.65rem;
-    padding:3px 0 1px;border-top:1px solid #003366;margin-top:4px;}
+.footer{text-align:center;color:#223344;font-size:0.58rem;
+    padding:3px 0 1px;border-top:1px solid #001628;margin-top:4px;}
 #MainMenu,footer,header{visibility:hidden;}
 [data-testid="stSidebar"],[data-testid="collapsedControl"]{display:none!important;}
 </style>
@@ -522,36 +454,22 @@ else:
 # ── SAMPLE QUESTIONS ──────────────────────────
 # (label, full_question)
 SAMPLES = [
-    # Chapter 2 — New Connections
-    ("Ch-2: New Connection Process",              "What is the complete new connection process according to NEPRA CSM?"),
-    ("Ch-2: Connection Categories",               "What are the different connection categories and their voltage requirements?"),
-    ("Ch-2: Sanctioning Authority",              "What is the sanctioning authority and their power for new connections?"),
-    ("Ch-2: Load Factor Requirements",            "What are the load factor requirements for new connections?"),
-    ("Ch-2: Cat-1 230/400V ≤15kW",              "What are the requirements for Category 1 new connection at 230/400V up to 15kW?"),
-    ("Ch-2: Cat-2 230/400V >15-70kW",           "What are the requirements for Category 2 new connection at 230/400V above 15kW but not exceeding 70kW?"),
-    ("Ch-2: Cat-3 230/400V >70-500kW",          "What are the requirements for Category 3 new connection at 230/400V above 70kW but not exceeding 500kW?"),
-    ("Ch-2: Cat-4 1kV-33kV >500kW-5MW",         "What are the requirements for Category 4 new connection at 1kV to 33kV above 500kW but not exceeding 5000kW?"),
-    ("Ch-2: Cat-5 66kV+ All Loads",              "What are the requirements for Category 5 new connection at 66kV and above for all loads?"),
-    # Chapter 4 — Metering
-    ("Ch-4: Metering Requirements",               "What are the metering installation requirements?"),
-    # Chapter 5 — Security Deposit
-    ("Ch-5: Security Deposit Rates",              "What are the security deposit rates and their calculation?"),
-    # Chapter 6 — Billing
-    ("Ch-6: Meter Reading & Billing",             "Explain the meter reading and billing procedure."),
-    # Chapter 7 — Defaulters
-    ("Ch-7: Defaulters Payment Recovery",         "What is the procedure for recovery of payments from defaulters?"),
-    # Chapter 8 — Disconnection & Reconnection
-    ("Ch-8: Disconnection Conditions",            "Under what conditions can QESCO disconnect a service?"),
-    ("Ch-8: Reconnection Procedure",             "What is the reconnection procedure after disconnection?"),
-    # Chapter 9 — Theft & Detection
-    ("Ch-9: Theft of Electricity",               "What constitutes theft of electricity and what are the penalties?"),
-    ("Ch-9: Detection & Charging",               "What is the procedure for detection and charging in theft cases?"),
-    # Chapter 10 — Complaints
-    ("Ch-10: Consumer Complaints",                "How can a consumer file a complaint and what is the redressal timeline?"),
-    # Chapter 13 — Net Metering
-    ("Ch-13: Net Metering Facility",             "What is the net metering facility and how does it work?"),
-    # Chapter 16 — EV Charging
-    ("Ch-16: EV Charging Stations",               "What are the requirements for Public Electric Vehicle Charging Stations?"),
+    # New Connection — Chapter 2 Categories
+    ("Ch-2: New Conn Cat-1 230/400V ≤15kW",        "What are the requirements for Category 1 new connection at 230/400V up to 15kW?"),
+    ("Ch-2: New Conn Cat-2 230/400V >15-70kW",     "What are the requirements for Category 2 new connection at 230/400V above 15kW but not exceeding 70kW?"),
+    ("Ch-2: New Conn Cat-3 230/400V >70-500kW",    "What are the requirements for Category 3 new connection at 230/400V above 70kW but not exceeding 500kW?"),
+    ("Ch-2: New Conn Cat-4 1kV-33kV >500kW-5MW",   "What are the requirements for Category 4 new connection at 1kV to 33kV above 500kW but not exceeding 5000kW?"),
+    ("Ch-2: New Conn Cat-5 66kV+ All Loads",        "What are the requirements for Category 5 new connection at 66kV and above for all loads?"),
+    # Chapter 4–16
+    ("Ch-4: Metering Installation Procedure",       "What is the procedure for metering installation according to NEPRA CSM?"),
+    ("Ch-5: Security Deposit Rates",                "What are the security deposit rates in NEPRA CSM NOV-2025?"),
+    ("Ch-6: Meter Reading & Billing",               "Explain the meter reading and billing procedure under NEPRA CSM."),
+    ("Ch-8: Disconnection & Reconnection",          "When can QESCO disconnect a service? What is the reconnection procedure?"),
+    ("Ch-9: Theft / Detection Penalties",          "What are the penalties for dishonest abstraction or theft of electricity?"),
+    ("Ch-10: Consumer Complaint & Redressal",       "How should a consumer file a complaint? What is the redressal timeframe?"),
+    ("Ch-13: Net Metering Facility",               "What is the net metering facility and how does it work?"),
+    ("Ch-14: Consumer Rights & DISCO Obligations",  "What are the consumer rights and DISCO obligations under Chapter 14?"),
+    ("Ch-16: EV Charging Stations",                 "What are the requirements for Public Electric Vehicle Charging Stations?"),
 ]
 
 # Only show picker when chat is empty
@@ -582,7 +500,7 @@ if not st.session_state.msgs:
         st.session_state.msgs.append({"role":"user","content":q})
         with st.spinner("⚡ Searching NEPRA CSM..."):
             hits   = retrieve(q, st.session_state.idx, st.session_state.chunks, st.session_state.metas)
-            answer = ask_groq_with_retry(q, hits)
+            answer = ask_groq(q, hits)
             card   = render_answer(answer, hits, rule_lookup)
         st.session_state.msgs.append({"role":"assistant","card":card})
         st.rerun()
@@ -606,22 +524,18 @@ if prompt := st.chat_input("⚡ Ask about NEPRA CSM — Connection / Billing / D
     st.session_state.msgs.append({"role":"user","content":prompt})
     with st.spinner("⚡ Searching NEPRA CSM..."):
         hits   = retrieve(prompt, st.session_state.idx, st.session_state.chunks, st.session_state.metas)
-        answer = ask_groq_with_retry(prompt, hits)
+        answer = ask_groq(prompt, hits)
         card   = render_answer(answer, hits, rule_lookup)
     st.session_state.msgs.append({"role":"assistant","card":card})
     st.rerun()
 
-# ── LOGOUT ────────────────────────────────────
-if st.button("🔒 Logout"):
-    st.session_state.authenticated = False
-    st.rerun()
-
 # ── FOOTER ────────────────────────────────────
 st.markdown("""
-<div class="disc">&#9888; <b>Disclaimer:</b> This AI-based app provides answers generated from NEPRA CSM NOV-2025 for reference only. While accuracy is aimed for, answers may be incomplete or incorrect. Always verify from official NEPRA CSM documents and consult QESCO/NEPRA for official decisions. Page and rule references are indicative — cross-check with original document.</div>
+<div class="disc">&#9888; <b>Disclaimer:</b> Informational only — based on NEPRA CSM NOV-2025.
+For official decisions contact <b>QESCO / NEPRA</b> at <b>nepra.org.pk</b></div>
 <div class="footer">AI for Everyone &mdash; Batch-05 &nbsp;|&nbsp; NEPRA CSM NOV-2025
 &nbsp;|&nbsp; QESCO Balochistan &nbsp;|&nbsp; Groq LLaMA + FAISS</div>
 <div class="footer" style="font-size:0.65rem; margin-top:4px;">
-Developer: <b>Faruk Ali Khan</b>
+Programmer: <b>[Your Name]</b> &nbsp;|&nbsp; AI Engineer: <b>[Your Name]</b>
 </div>
 """, unsafe_allow_html=True)
